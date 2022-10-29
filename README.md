@@ -12,10 +12,7 @@
 
 
 ## Purpose of this fork
-This fork contains many bug fixes and enhancements that have been done for projects such as YoshiCrafter Engine.
-## Warnings
-- It doesn't contains **every** enhancement made for YoshiCrafter Engine (FlxSound pitch and fast state switching is missing for example).
-- This fork also bundles `flixel-addons` and `flixel-ui` with a few enhancements.
+This fork fixes some minor bugs with the YoshiCrafter29 fork of flixel, see that for more info about the fork.
 
 [![](images/showcase.png)](https://haxeflixel.com/showcase)
 
