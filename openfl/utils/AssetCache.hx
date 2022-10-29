@@ -91,7 +91,7 @@ class AssetCache implements IAssetCache
             }
         }
 
-		LimeAssets.cache.clearExceptArray(array);
+		// LimeAssets.cache.clearExceptArray(array);
     }
 
 	/**
