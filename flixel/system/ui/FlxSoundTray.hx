@@ -142,7 +142,7 @@ class FlxSoundTray extends Sprite
 	{
 		if (!Silent)
 		{
-			FlxG.sound.load(volumeChangeSFX).play();
+			FlxG.sound.load(FlxAssets.getSound(volumeChangeSFX)).play();
 		}
 
 		_timer = 1;
