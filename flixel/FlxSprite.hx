@@ -40,6 +40,12 @@ using flixel.util.FlxColorTransformUtil;
 class FlxSprite extends FlxObject
 {
 	/**
+	 * The default value for `antialiasing` across all `FlxSprites`,
+	 * defaults to `false`.
+	 */
+	public static var defaultAntialiasing:Bool = false;
+	
+	/**
 	 * Class that handles adding and playing animations on this sprite.
 	 */
 	public var animation:FlxAnimationController;
@@ -278,7 +284,7 @@ class FlxSprite extends FlxObject
 	public function new(?X:Float = 0, ?Y:Float = 0, ?SimpleGraphic:FlxGraphicAsset)
 	{
 		super(X, Y);
-
+		antialiasing = defaultAntialiasing;
 		useFramePixels = FlxG.renderBlit;
 		if (SimpleGraphic != null)
 			loadGraphic(SimpleGraphic);
