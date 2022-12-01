@@ -256,7 +256,7 @@ class FlxGame extends Sprite
 	 * @param SkipSplash      Whether you want to skip the flixel splash screen with `FLX_NO_DEBUG`.
 	 * @param StartFullscreen Whether to start the game in fullscreen mode (desktop targets only).
 	 */
-	public function new(GameWidth:Int = 0, GameHeight:Int = 0, ?InitialState:Class<FlxState>, Zoom:Float = 1, UpdateFramerate:Int = 60,
+	public function new(GameWidth:Int = 0, GameHeight:Int = 0, ?InitialState:Class<FlxState>, UpdateFramerate:Int = 60,
 			DrawFramerate:Int = 60, SkipSplash:Bool = false, StartFullscreen:Bool = false)
 	{
 		super();
@@ -274,7 +274,7 @@ class FlxGame extends Sprite
 			GameHeight = FlxG.stage.stageHeight;
 
 		// Basic display and update setup stuff
-		FlxG.init(this, GameWidth, GameHeight, Zoom);
+		FlxG.init(this, GameWidth, GameHeight, -1);
 
 		FlxG.updateFramerate = UpdateFramerate;
 		FlxG.drawFramerate = DrawFramerate;
