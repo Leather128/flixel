@@ -648,6 +648,7 @@ class FlxG
 		#if FLX_ACCELEROMETER
 		accelerometer = new FlxAccelerometer();
 		#end
+		save.bind("flixel");
 
 		plugins = new PluginFrontEnd();
 		vcr = new VCRFrontEnd();
