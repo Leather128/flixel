@@ -648,8 +648,6 @@ class FlxG
 		accelerometer = new FlxAccelerometer();
 		#end
 
-		initSave();
-
 		plugins = new PluginFrontEnd();
 		vcr = new VCRFrontEnd();
 
