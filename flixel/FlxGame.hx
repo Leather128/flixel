@@ -274,7 +274,7 @@ class FlxGame extends Sprite
 			GameHeight = FlxG.stage.stageHeight;
 
 		// Basic display and update setup stuff
-		FlxG.init(this, GameWidth, GameHeight, -1);
+		FlxG.init(this, GameWidth, GameHeight);
 
 		FlxG.updateFramerate = UpdateFramerate;
 		FlxG.drawFramerate = DrawFramerate;
