@@ -620,6 +620,7 @@ class FlxG
 
 		FlxG.initialWidth = width;
 		FlxG.initialHeight = height;
+		FlxG.initialZoom = FlxCamera.defaultZoom = 1;
 
 		resizeGame(Lib.current.stage.stageWidth, Lib.current.stage.stageHeight);
 
