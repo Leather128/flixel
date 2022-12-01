@@ -610,7 +610,7 @@ class FlxG
 	 * Called by `FlxGame` to set up `FlxG` during `FlxGame`'s constructor.
 	 */
 	@:allow(flixel.FlxGame.new)
-	static function init(Game:FlxGame, Width:Int, Height:Int, Zoom:Float):Void
+	static function init(Game:FlxGame, Width:Int, Height:Int):Void
 	{
 		game = Game;
 		width = Std.int(Math.abs(Width));
