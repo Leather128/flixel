@@ -620,7 +620,6 @@ class FlxG
 
 		FlxG.initialWidth = width;
 		FlxG.initialHeight = height;
-		FlxG.initialZoom = FlxCamera.defaultZoom = Zoom;
 
 		resizeGame(Lib.current.stage.stageWidth, Lib.current.stage.stageHeight);
 
@@ -648,7 +647,8 @@ class FlxG
 		#if FLX_ACCELEROMETER
 		accelerometer = new FlxAccelerometer();
 		#end
-		save.bind("flixel");
+
+		initSave();
 
 		plugins = new PluginFrontEnd();
 		vcr = new VCRFrontEnd();
@@ -656,8 +656,6 @@ class FlxG
 		#if FLX_SOUND_SYSTEM
 		sound = new SoundFrontEnd();
 		#end
-
-		textInput = new TextInput();
 	}
 
 	static function initRenderMethod():Void
