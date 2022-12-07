@@ -1,14 +1,14 @@
 package flixel.addons.effects;
 
-import flixel.animation.FlxAnimation;
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.animation.FlxAnimation;
 import flixel.group.FlxGroup;
 import flixel.group.FlxSpriteGroup;
+import flixel.math.FlxPoint;
 import flixel.system.FlxAssets;
 import flixel.util.FlxArrayUtil;
 import flixel.util.FlxDestroyUtil;
-import flixel.math.FlxPoint;
 
 /**
  * Nothing too fancy, just a handy little class to attach a trail effect to a FlxSprite.
@@ -86,6 +86,7 @@ class FlxTrail extends FlxSpriteGroup
 	var _recentFlipX:Array<Bool> = [];
 	var _recentFlipY:Array<Bool> = [];
 	var _recentAnimations:Array<FlxAnimation> = [];
+	var _recentRotOffsets:Array<FlxPoint> = [];
 
 	/**
 	 * Stores the sprite origin (rotation axis)
@@ -123,8 +124,10 @@ class FlxTrail extends FlxSpriteGroup
 	override public function destroy():Void
 	{
 		FlxDestroyUtil.putArray(_recentPositions);
+		FlxDestroyUtil.putArray(_recentRotOffsets);
 		FlxDestroyUtil.putArray(_recentScales);
 
+		_recentRotOffsets = null;
 		_recentAngles = null;
 		_recentPositions = null;
 		_recentScales = null;
@@ -155,17 +158,22 @@ class FlxTrail extends FlxSpriteGroup
 
 			// Push the current position into the positons array and drop one.
 			var spritePosition:FlxPoint = null;
+			var rotOffsetLol:FlxPoint = null;
 			if (_recentPositions.length == _trailLength)
 			{
 				spritePosition = _recentPositions.pop();
+				rotOffsetLol = _recentRotOffsets.pop();
 			}
 			else
 			{
 				spritePosition = FlxPoint.get();
+				rotOffsetLol = FlxPoint.get();
 			}
 
 			spritePosition.set(target.x - target.offset.x, target.y - target.offset.y);
+			rotOffsetLol.copyFrom(target.rotOffset);
 			_recentPositions.unshift(spritePosition);
+			_recentRotOffsets.unshift(rotOffsetLol);
 
 			// Also do the same thing for the Sprites angle if rotationsEnabled
 			if (rotationsEnabled)
@@ -207,6 +215,7 @@ class FlxTrail extends FlxSpriteGroup
 				trailSprite = members[i];
 				trailSprite.x = _recentPositions[i].x;
 				trailSprite.y = _recentPositions[i].y;
+				trailSprite.rotOffset = _recentRotOffsets[i];
 
 				// And the angle...
 				if (rotationsEnabled)
@@ -256,6 +265,7 @@ class FlxTrail extends FlxSpriteGroup
 		_recentFlipX.splice(0, _recentFlipX.length);
 		_recentFlipY.splice(0, _recentFlipY.length);
 		_recentAnimations.splice(0, _recentAnimations.length);
+		_recentRotOffsets.splice(0, _recentRotOffsets.length);
 
 		for (i in 0...members.length)
 		{
