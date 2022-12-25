@@ -161,6 +161,11 @@ class FlxSprite extends FlxObject
 	public var rotOffset(default, null):FlxPoint;
 
 	/**
+	 * Rotation hitbox angle
+	 */
+	public var rotOffsetAngle:Null<Float>;
+
+	/**
 	 * Change the size of your sprite's graphic.
 	 * NOTE: The hitbox is not automatically adjusted, use `updateHitbox()` for that (or `setGraphicSize()`).
 	 * WARNING: With `FlxG.renderBlit`, scaling sprites decreases rendering performance by a factor of about x10!
@@ -745,10 +750,25 @@ class FlxSprite extends FlxObject
 
 		_frame.prepareMatrix(_matrix, FlxFrameAngle.ANGLE_0, _flipX, _flipY);
 		_matrix.translate(-origin.x, -origin.y);
-		if (useOffsetAsRotOffset)
-			_matrix.translate(-offset.x, -offset.y);
+
+		if (rotOffsetAngle != null && rotOffsetAngle != angle)
+		{
+			var angleOff = (-angle + rotOffsetAngle) * FlxAngle.TO_RAD;
+			_matrix.rotate(-angleOff);
+			if (useOffsetAsRotOffset)
+				_matrix.translate(-offset.x, -offset.y);
+			else
+				_matrix.translate(-rotOffset.x, -rotOffset.y);
+			_matrix.rotate(angleOff);
+		}
 		else
-			_matrix.translate(-rotOffset.x, -rotOffset.y);
+		{
+			if (useOffsetAsRotOffset)
+				_matrix.translate(-offset.x, -offset.y);
+			else
+				_matrix.translate(-rotOffset.x, -rotOffset.y);
+		}
+
 		_matrix.scale(scale.x, scale.y);
 
 		if (bakedRotationAngle <= 0)
