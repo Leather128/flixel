@@ -28,11 +28,11 @@ class VarTween extends FlxTween
 		#if FLX_DEBUG
 		if (object == null) {
 			trace("Cannot tween variables of an object that is null.");
-			return;
+			return this;
 		}
 		else if (properties == null) {
 			trace("Cannot tween null properties.");
-			return;
+			return this;
 		}
 		#end
 
