@@ -824,8 +824,11 @@ class FlxTweenManager extends FlxBasic
 	 */
 	public function tween(Object:Dynamic, Values:Dynamic, Duration:Float = 1, ?Options:TweenOptions):VarTween
 	{
-		if (Object == null)
-			throw 'Cannot tween an object that is equal to null.';
+		if (Object == null) {
+			trace('Cannot tween an object that is equal to null.');
+			return null;
+		}
+		
 		var tween = new VarTween(Options, this);
 		tween.tween(Object, Values, Duration);
 		return add(tween);
