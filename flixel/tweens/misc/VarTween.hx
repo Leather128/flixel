@@ -26,10 +26,14 @@ class VarTween extends FlxTween
 	public function tween(object:Dynamic, properties:Dynamic, duration:Float):VarTween
 	{
 		#if FLX_DEBUG
-		if (object == null)
-			throw "Cannot tween variables of an object that is null.";
-		else if (properties == null)
-			throw "Cannot tween null properties.";
+		if (object == null) {
+			trace("Cannot tween variables of an object that is null.");
+			return;
+		}
+		else if (properties == null) {
+			trace("Cannot tween null properties.");
+			return;
+		}
 		#end
 
 		_object = object;
@@ -67,8 +71,10 @@ class VarTween extends FlxTween
 		var fieldPaths:Array<String>;
 		if (Reflect.isObject(_properties))
 			fieldPaths = Reflect.fields(_properties);
-		else
-			throw "Unsupported properties container - use an object containing key/value pairs.";
+		else {
+			trace("Unsupported properties container - use an object containing key/value pairs.");
+			return;
+		}
 
 		for (fieldPath in fieldPaths)
 		{
@@ -78,8 +84,10 @@ class VarTween extends FlxTween
 			for (component in path)
 			{
 				target = Reflect.getProperty(target, component);
-				if (!Reflect.isObject(target))
-					throw 'The object does not have the property "$component" in "$fieldPath"';
+				if (!Reflect.isObject(target)) {
+					trace('The object does not have the property "$component" in "$fieldPath"');
+					continue;
+				}
 			}
 
 			_propertyInfos.push({
@@ -95,12 +103,16 @@ class VarTween extends FlxTween
 	{
 		for (info in _propertyInfos)
 		{
-			if (Reflect.getProperty(info.object, info.field) == null)
-				throw 'The object does not have the property "${info.field}"';
+			if (Reflect.getProperty(info.object, info.field) == null) {
+				trace('The object does not have the property "${info.field}"');
+				return;
+			}
 
 			var value:Dynamic = Reflect.getProperty(info.object, info.field);
-			if (Math.isNaN(value))
-				throw 'The property "${info.field}" is not numeric.';
+			if (Math.isNaN(value)) {
+				trace('The property "${info.field}" is not numeric.');
+				return;
+			}
 
 			info.startValue = value;
 			info.range = info.range - value;
