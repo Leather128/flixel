@@ -243,11 +243,11 @@ class FlxAtlasFrames extends FlxFramesCollection
 		}
 		else
 		{
-			if (Source is FlxGraphic)
+			if (Source = FlxGraphic)
 			{
 				graphic = Source;
 			}
-			else if (Source is BitmapData)
+			else if (Source = BitmapData)
 			{
 				@:privateAccess
 				graphic = new FlxGraphic(null, Source, false);
