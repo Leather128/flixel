@@ -119,7 +119,8 @@ class BitmapFrontEnd
 	 */
 	public inline function checkCache(Key:String):Bool
 	{
-		return get(Key) != null;
+		var v = get(Key);
+		return v != null && v.bitmap != null && v.bitmap.readable;
 	}
 
 	/**
@@ -324,9 +325,15 @@ class BitmapFrontEnd
 
 	public function removeIfNoUse(graphic:FlxGraphic):Void
 	{
-		if (graphic != null && graphic.useCount == 0 && !graphic.persist)
+		if (graphic != null && graphic.useCount <= 0 && !graphic.persist)
 			remove(graphic);
 	}
+
+	@:allow(flixel.graphics.FlxGraphic)
+	var __doNotDelete:Bool = false;
+
+	var __countCache:Array<FlxGraphic> = [];
+	var __cacheCopy:Map<String, FlxGraphic> = [];
 
 	/**
 	 * Clears image cache (and destroys those images).
@@ -340,14 +347,28 @@ class BitmapFrontEnd
 			return;
 		}
 
-		for (key => obj in _cache)
+		__doNotDelete = false;
+
+		for(g in __countCache)
+			g.useCount -= 10;
+
+		__countCache = [];
+
+		for (key in __cacheCopy.keys())
 		{
-			if (obj.mustDestroy)
+			var obj = __cacheCopy.get(key);
+			var objN = get(key);
+			if (objN != null && objN != obj) {
+				obj.destroy();
+			}
+			if (obj.mustDestroy || (obj.destroyOnNoUse && !obj.persist && obj.useCount <= 0))
 			{
 				removeKey(key);
 				obj.destroy();
 			}
 		}
+
+		__cacheCopy = [];
 	}
 
 	/**
@@ -358,9 +379,23 @@ class BitmapFrontEnd
 		if (_cache == null)
 			_cache = new Map();
 
-		for (e in _cache)
-			if (e != null)
-				e.mustDestroy = true;
+		__countCache = [];
+
+		__doNotDelete = true;
+		__cacheCopy = [];
+		for (k=>e in _cache) {
+			if (e == null) continue;
+			if (e.assetsKey != null) {
+				__countCache.push(e);
+				e.useCount += 10;
+			} else if (e.destroyOnNoUse) {
+				FlxG.bitmap.removeByKey(k);
+				continue;
+			}
+			e.mustDestroy = true;
+			__cacheCopy.set(k, e);
+		}
+		
 	}
 
 	inline function removeKey(key:String):Void
