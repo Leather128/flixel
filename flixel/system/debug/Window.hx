@@ -16,7 +16,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxDestroyUtil;
 
 @:bitmap("assets/images/debugger/windowHandle.png")
-private class GraphicWindowHandle extends BitmapData {}
+class GraphicWindowHandle extends BitmapData {}
 
 /**
  * A generic, Flash-based window class, created for use in FlxDebugger.
@@ -261,6 +261,8 @@ class Window extends Sprite
 	{
 		visible = Value;
 
+		nullCheckWindowSettings();
+
 		if (!_closable && FlxG.save.isBound)
 		{
 			FlxG.save.data.windowSettings[_id] = visible;
@@ -284,17 +286,22 @@ class Window extends Sprite
 		parent.addChild(this);
 	}
 
+	function nullCheckWindowSettings()
+	{
+		if (FlxG.save.data.windowSettings == null)
+		{
+			var maxWindows = 20; // arbitrary
+			FlxG.save.data.windowSettings = [for (_ in 0...maxWindows) true];
+			FlxG.save.flush();
+		}
+	}
+
 	function loadSaveData():Void
 	{
 		if (!FlxG.save.isBound)
 			return;
 
-		if (FlxG.save.data.windowSettings == null)
-		{
-			var maxWindows = 10; // arbitrary
-			FlxG.save.data.windowSettings = [for (_ in 0...maxWindows) true];
-			FlxG.save.flush();
-		}
+		nullCheckWindowSettings();
 		visible = FlxG.save.data.windowSettings[_id];
 	}
 

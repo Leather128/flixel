@@ -142,7 +142,7 @@ class VarTween extends FlxTween
 	}
 }
 
-private typedef VarTweenProperty =
+typedef VarTweenProperty =
 {
 	object:Dynamic,
 	field:String,
