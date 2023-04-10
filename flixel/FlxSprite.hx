@@ -1,5 +1,6 @@
 package flixel;
 
+import flixel.graphics.tile.FlxGraphicsShader;
 import flash.display.BitmapData;
 import flash.display.BlendMode;
 import flash.geom.ColorTransform;
@@ -291,7 +292,7 @@ class FlxSprite extends FlxObject
 	public function new(?X:Float = 0, ?Y:Float = 0, ?SimpleGraphic:FlxGraphicAsset)
 	{
 		super(X, Y);
-		antialiasing = defaultAntialiasing;
+
 		useFramePixels = FlxG.renderBlit;
 		if (SimpleGraphic != null)
 			loadGraphic(SimpleGraphic);
@@ -699,6 +700,9 @@ class FlxSprite extends FlxObject
 		if (dirty) // rarely
 			calcFrame(useFramePixels);
 
+		if (shader != null && shader is FlxGraphicsShader)
+			shader.setCamSize(_frame.frame.x, _frame.frame.y, _frame.frame.width, _frame.frame.height);
+
 		if (cameras == null)
 			cameras = [];
 		for (camera in cameras)
@@ -792,8 +796,15 @@ class FlxSprite extends FlxObject
 			_matrix.ty = Math.floor(_matrix.ty);
 		}
 
+		doAdditionalMatrixStuff(_matrix, camera);
+
 		camera.drawPixels(_frame, framePixels, _matrix, colorTransform, blend, antialiasing, shader);
 	}
+
+	/**
+	 * Made in case developer wanna finalize stuff with the matrix.
+	 */
+	public function doAdditionalMatrixStuff(matrix:FlxMatrix, camera:FlxCamera) {}
 
 	/**
 	 * Stamps / draws another `FlxSprite` onto this `FlxSprite`.
